@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Todo List</title>
+    <style>
+      .completed {
+        text-decoration: line-through;
+      }
+    </style>
+  </head>
+  <body>
+    <div x-data="{ todos: [], userInput: ''}">
+      <form @submit.prevent>
+        <input type="text" placeholder="Enter new todo" x-model="userInput" />
+        <button @click="(userInput.trim().length > 0) && todos.push({name: userInput, completed: false}); userInput='';">Add</button>
+      </form>
+      <ul>
+        <template x-for="todo in todos">
+          <li>
+            <input type="checkbox" @click="todo.completed = !todo.completed">
+            <span x-text="todo.name" x-bind:class="todo.completed && 'completed'"></span>
+            <button @click="todos = todos.filter(currTodo => currTodo.name != todo.name)">X</button>
+          </li>
+        </template>
+      </ul>
+      <button x-show="todos.length" @click="todos = []">Clear All</button>
+    </div>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  </body>
+</html>
