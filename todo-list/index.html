@@ -5,29 +5,90 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Todo List</title>
-    <style>
-      .completed {
-        text-decoration: line-through;
-      }
-    </style>
+    <link
+      href="https://unpkg.com/@tailwindcss/forms@0.2.1/dist/forms.min.css"
+      rel="stylesheet"
+    />
   </head>
-  <body>
-    <div x-data="{ todos: [], userInput: ''}">
-      <form @submit.prevent>
-        <input type="text" placeholder="Enter new todo" x-model="userInput" />
-        <button @click="(userInput.trim().length > 0) && todos.push({name: userInput, completed: false}); userInput='';">Add</button>
+  <body class="w-full h-screen flex justify-center items-center">
+    <div
+      class="max-w-sm w-full shadow-md p-10 bg-teal-400 font-sans"
+      x-data="{ todos: [], userInput: ''}"
+    >
+      <div class="mb-6 py-2 border-b border-white border-solid">
+        <h1 class="text-3xl font-medium text-white tracking-wide">Todo List</h1>
+        <p class="text-sm text-teal-100">
+          Get things done, one item at a time.
+        </p>
+      </div>
+      <form class="flex gap-1" @submit.prevent>
+        <input
+          class="w-full bg-white p-2 border-2 border-teal-400 placeholder:italic placeholder:text-slate-400 focus:outline-none focus:border-teal-400 focus:ring-white focus:ring-1"
+          type="text"
+          placeholder="Enter new todo"
+          x-model="userInput"
+        />
+        <button
+          class="px-4 border border-white text-white uppercase hover:bg-teal-500"
+          @click="(userInput.trim().length > 0) && todos.push({name: userInput, completed: false}); userInput='';"
+        >
+          Add
+        </button>
       </form>
+      <p class="py-4 text-white text-center" x-show="todos.length === 0">
+        Your todo list is empty.
+      </p>
       <ul>
         <template x-for="todo in todos">
-          <li>
-            <input type="checkbox" @click="todo.completed = !todo.completed">
-            <span x-text="todo.name" x-bind:class="todo.completed && 'completed'"></span>
-            <button @click="todos = todos.filter(currTodo => currTodo.name != todo.name)">X</button>
+          <li class="p-4 flex gap-2 items-center hover:bg-teal-500">
+            <input
+              class="w-6 h-6 bg-white text-teal-700 border border-teal-400 checked:bg-teal-700 focus:ring-0 hover:cursor-pointer"
+              type="checkbox"
+              @click="todo.completed = !todo.completed"
+            />
+            <span
+              class="grow text-white"
+              x-text="todo.name"
+              x-bind:class="todo.completed && 'line-through'"
+            ></span>
+            <button
+              class="text-white hover:text-teal-100"
+              @click="todos = todos.filter(currTodo => currTodo.name != todo.name)"
+            >
+              <svg
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="w-6 h-6"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
+                />
+              </svg>
+            </button>
           </li>
         </template>
       </ul>
-      <button x-show="todos.length" @click="todos = []">Clear All</button>
+      <button
+        class="mt-2 py-2 px-4 border border-white text-white uppercase hover:bg-teal-500"
+        x-show="todos.length"
+        @click="todos = []"
+      >
+        Clear All
+      </button>
+      <p
+        class="mt-2 text-sm text-teal-100"
+        x-show="todos.length > 0"
+        x-text="`${todos.filter(todo => todo.completed === true).length} / ${todos.length} tasks completed`"
+      ></p>
     </div>
-    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script
+      defer
+      src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"
+    ></script>
+    <script src="https://cdn.tailwindcss.com"></script>
   </body>
 </html>
